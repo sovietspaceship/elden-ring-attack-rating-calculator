@@ -1,0 +1,4 @@
+node_modules/
+dist/
+test-data/*.json
+!test-data/README.md
