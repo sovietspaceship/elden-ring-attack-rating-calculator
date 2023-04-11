@@ -13,10 +13,7 @@ Install [erdb](https://github.com/EldenRingDatabase/erdb).
 
 To generate the required data:
 
-erdb generate armaments
-erdb generate correction-attack
-erdb generate correction-graph
-erdb generate reinforcements
+erdb generate armaments correction-attack correction-graph reinforcements
 
 # Contributing
 
