@@ -2,6 +2,7 @@
 export type DamageType = 'physical' | 'magic' | 'fire' | 'lightning' | 'holy';
 export type StatusEffectType = 'bleed' | 'frostbite' | 'poison' | 'scarlet_rot' | 'sleep' | 'madness';
 export type DamageAttribute = 'strength' | 'dexterity' | 'intelligence' | 'faith' | 'arcane';
+export type SpellBuff = Record<DamageAttribute, number>
 
 class ComputedValue {
     constructor(public base: number, public scaling: number) { }
@@ -179,5 +180,14 @@ export class ArmamentCalculator {
         }
 
         return new ComputedValue(base, 0.0)
+    }
+
+    spellBuff(attributes: Record<DamageAttribute, number>): SpellBuff {
+        return Object.keys(attributes).reduce((acc, attribute) => {
+            const correction_id = this.gameData.affinity_properties.correction_calc_id.physical as number;
+            const scaling_correction = this.gameData.correction_graph[correction_id][attributes[attribute as DamageAttribute]]
+            acc[attribute as DamageAttribute] = 100 + scaling_correction * (this.gameData.reinforcement.scaling[attribute as DamageAttribute] || 0) * 100 * (this.gameData.affinity_properties.scaling[attribute as DamageAttribute] || 0)
+            return acc;
+        }, {} as SpellBuff)
     }
 }
